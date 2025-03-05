@@ -1,0 +1,545 @@
+// Importazione dei file esterni
+
+// Importo il file "components" per mixin e variabili
+@import "components";
+// Importo i font "Poppins" e "Quicksand" da Google Fonts
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Quicksand:wght@300..700&display=swap");
+
+// Reset globale per tutti gli elementi della pagina
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", serif;
+  font-weight: 600;
+  font-style: normal;
+}
+
+// Contenitore PADRE che ospita il testo e gli altri contenuti
+main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+
+  // Contenitore FIGLIO che contiene il testo e gli altri contenuti centrati
+  #container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+
+    //SLIDER: Contenitore del testo laterale che include animazioni di movimento
+    #textContainer {
+      position: absolute;
+      transition: transform 0.5s ease;
+      // Includo mixin per applicare uno stile comune al contenitore del testo
+      @include textContainer-style;
+      width: 46%;
+      height: 100%;
+      z-index: 3;
+      border-top-left-radius: 50px;
+      border-bottom-left-radius: 50px;
+
+      // Animazione per spostare il contenitore a sinistra con effetto di transizione
+      &.move-left {
+        transform: translateX(-100%);
+        border-top-left-radius: 0px;
+        border-bottom-left-radius: 0px;
+        width: 50%;
+        border-top-right-radius: 50px;
+        border-bottom-right-radius: 50px;
+      }
+
+      // Sezione che visualizza il testo del login
+      #loginText {
+        display: flex;
+        @include text-box-style;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+
+        h1,
+        p {
+          margin: 20px 0;
+          color: white;
+        }
+
+        h1 {
+          font-size: 40px;
+        }
+
+        p {
+          font-size: 18px;
+        }
+        // Bottone che permette di passare alla schermata di registrazione
+        #switchToRegister {
+          @include switch-button;
+          span {
+            font-size: 20px;
+            color: white;
+            width: 100%;
+            display: inline-block;
+          }
+        }
+
+        // Animazione che fa comparire il testo da destra
+        animation: textFromRight 2s ease 0s 1 normal forwards;
+        @keyframes textFromRight {
+          0% {
+            opacity: 0;
+            transform: translateX(50px);
+          }
+          100% {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+      }
+
+      // Sezione che visualizza il testo di registrazione
+      #registerText {
+        display: none;
+        @include text-box-style;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+
+        h1,
+        p {
+          margin: 20px 0;
+          color: white;
+        }
+
+        h1 {
+          font-size: 40px;
+        }
+
+        p {
+          padding: 5px;
+          font-size: 18px;
+        }
+
+        // Bottone che permette di passare alla schermata di login
+        #switchToLogin {
+          @include switch-button;
+          span {
+            font-size: 20px;
+            color: white;
+            width: 100%;
+            display: inline-block;
+          }
+        }
+
+        // Animazione che fa comparire il testo da sinistra
+        animation: textFromLeft 2s ease 0s 1 normal forwards;
+        @keyframes textFromLeft {
+          0% {
+            opacity: 0;
+            transform: translateX(-50px);
+          }
+
+          100% {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+      }
+
+      //RESPOINSIVE
+
+      // Media query per adattare il layout su schermi di dimensioni medie (es. tablet)
+      @media all and (max-width: 769px) {
+        width: 50%;
+      }
+
+      // Media query per schermi molto piccoli (es. smartphone)
+      @media all and (max-width: 426px) {
+        display: none;
+      }
+    }
+
+    //FORM DI LOGIN
+
+    #LoginFormContainer {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      width: 50%;
+      height: 100%;
+      z-index: 1;
+
+      form {
+        @include form-style;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        padding: 50px;
+
+        h1 {
+          @include h1-style;
+
+          //titolo responsive
+          @media all and (max-width: 769px) {
+            font-size: 44px;
+          }
+          @media all and (max-width: 426px) {
+            font-size: 40px;
+          }
+          @media all and (max-width: 376px) {
+            font-size: 30px;
+          }
+          @media all and (max-width: 321px) {
+            font-size: 27px;
+          }
+        }
+
+        //Sezione che contiene i link per il login tramite social
+        #social {
+          display: flex;
+          justify-content: center;
+          width: 100%;
+
+          //Stile dei bottoni social
+          ul {
+            @include social-style;
+
+            li {
+              display: inline-block;
+              a {
+                border: solid grey 1px;
+                color: black;
+                font-size: 20px;
+                border-radius: 50%;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                width: 50px;
+                height: 50px;
+                text-decoration: none;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+                transition: all 0.3s ease;
+
+                &:hover {
+                  transform: scale(1.1);
+                  background: linear-gradient(
+                    45deg,
+                    #f58529,
+                    #dd2a7b,
+                    #8134b8,
+                    #515bd4
+                  );
+
+                  background-clip: text;
+                  -webkit-text-fill-color: transparent;
+                }
+
+                &:active {
+                  transform: scale(0.95);
+                  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+                }
+              }
+            }
+          }
+        }
+        //Sezione che contiene i campi per l'inserimento delle credenziali
+        input {
+          @include input-style;
+          &::placeholder {
+            @media all and (max-width: 426px) {
+              font-size: 13px;
+            }
+          }
+
+          //INPUT RESPONSIVE
+          @media all and (max-width: 426px) {
+            width: 100%;
+          }
+          @media all and (max-width: 376px) {
+            width: 100%;
+          }
+          @media all and (max-width: 321px) {
+            width: 100%;
+          }
+        }
+
+        //Sezione che contiene i messaggi di errore
+        #feedbackEmail,
+        #feedbackPsw {
+          @include feedback-style;
+
+          @media all and (max-width: 426px) {
+            width: 100%;
+            font-size: 13px;
+          }
+          
+        }
+
+        //Sezione che contiene i link per il recupero della password e la registrazione
+        .links {
+          width: 90%;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          a {
+            @include link-style;
+
+            //LINK RESPONSIVE
+            @media all and (max-width: 376px) {
+              font-size: 15px;
+            }
+            @media all and (max-width: 321px) {
+              font-size: 14px;
+            }
+          }
+
+          //Nascondi il link per la registrazione su schermi che non siano mobile
+          .hidden-link {
+            visibility: hidden;
+            @media all and (max-width: 426px) {
+              visibility: visible;
+            }
+          }
+
+          @media all and (max-width: 426px) {
+            width: 100%;
+          }
+          @media all and (max-width: 376px) {
+            width: 100%;
+          }
+          @media all and (max-width: 321px) {
+            width: 100%;
+          }
+        }
+
+        //Bottone per inviare il form
+        #LoginFormsubmit {
+          @include submit-style;
+
+          @media all and (max-width: 769px) {
+            width: 90%;
+            height: 60px;
+            font-size: 30px;
+          }
+          @media all and (max-width: 426px) {
+            width: 60%;
+            font-size: 20px;
+          }
+          @media all and (max-width: 376px) {
+            width: 90%;
+            font-size: 20px;
+          }
+          @media all and (max-width: 321px) {
+            width: 90%;
+            font-size: 20px;
+          }
+        }
+
+        //LOGIN FORM RESPONSIVE
+        @media all and (max-width: 769px) {
+          width: 100%;
+          height: 100%;
+          padding: 10px;
+        }
+        @media all and (max-width: 426px) {
+          width: 100%;
+          height: 100%;
+          padding: 30px;
+        }
+        @media all and (max-width: 376px) {
+          width: 100%;
+          height: 100%;
+          padding: 30px;
+        }
+        @media all and (max-width: 321px) {
+          width: 100%;
+          height: 100%;
+          padding: 20px;
+        }
+      }
+
+      //CONTENITORE LOGIN FORM RESPONSIVE
+      @media all and (max-width: 426px) {
+        width: 100%;
+        height: 100%;
+        display: flex; //cambialo per vedere login
+      }
+    }
+
+    //FORM DI REGISTRAZIONE
+    #RegisterFormContainer {
+      width: 50%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1;
+
+      form {
+        @include form-style;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        padding: 50px;
+
+        h1 {
+          text-align: center;
+          @include h1-style;
+
+          //titolo responsive
+          @media all and (max-width: 769px) {
+            font-size: 40px;
+          }
+          @media all and (max-width: 426px) {
+            font-size: 40px;
+          }
+          @media all and (max-width: 376px) {
+            font-size: 30px;
+          }
+          @media all and (max-width: 321px) {
+            font-size: 30px;
+          }
+        }
+
+        //Sezione che contiene i campi per l'inserimento delle credenziali
+        .section {
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin: 5px 0;
+
+          input,
+          select {
+            @include input-style;
+            margin: 0 5px;
+            width: 100%;
+
+            &::placeholder {
+              @media all and (max-width: 426px) {
+                font-size: 10px;
+              }
+            }
+          }
+        }
+
+        #nation {
+          @include input-style;
+          width: 98%;
+
+          @media all and (max-width: 426px) {
+            width: 98%;
+          }
+        }
+
+        #feedbackAnagraphicData,
+        #feedbackCredential {
+          @include feedback-style;
+
+          @media all and (max-width: 426px) {
+            width: 100%;
+            font-size: 13px;
+          }
+          
+        }
+
+        //Sezione che contiene i link per il login e i termini di servizio
+        .links {
+          text-align: center;
+          width: 95%;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          a {
+            padding: 3px 0;
+
+            @include link-style;
+
+            @media all and (max-width: 769px) {
+              font-size: 13px;
+            }
+            @media all and (max-width: 376px) {
+              font-size: 11.5px;
+            }
+            @media all and (max-width: 321px) {
+              font-size: 11px;
+              margin: 0 1px;
+            }
+          }
+
+          .hidden-link {
+            visibility: hidden;
+            @media all and (max-width: 426px) {
+              visibility: visible;
+            }
+          }
+        }
+
+        //Bottone per inviare il form
+        #RegisterFormsubmit {
+          @include submit-style;
+          margin: 3px 0;
+
+          @media all and (max-width: 769px) {
+            width: 90%;
+            height: 60px;
+            font-size: 30px;
+          }
+          @media all and (max-width: 426px) {
+            width: 80%;
+            padding: 5px 0;
+            font-size: 20px;
+          }
+          @media all and (max-width: 376px) {
+            width: 90%;
+            font-size: 20px;
+          }
+          @media all and (max-width: 321px) {
+            width: 90%;
+            height: 40px;
+            font-size: 20px;
+          }
+        }
+
+        //REGISTER FORM RESPONSIVE
+        @media all and (max-width: 769px) {
+          width: 100%;
+          height: 100%;
+          padding: 15px;
+        }
+        @media all and (max-width: 426px) {
+          width: 100%;
+          height: 100%;
+          padding: 30px;
+        }
+        @media all and (max-width: 376px) {
+          width: 100%;
+          height: 100%;
+          padding: 30px;
+        }
+        @media all and (max-width: 321px) {
+          width: 100%;
+          height: 100%;
+          padding: 20px;
+        }
+      }
+
+      //CONTENITORE REGISTER FORM RESPONSIVE
+      @media all and (max-width: 426px) {
+        display: none; //cambialo per nascondere register
+        width: 100%;
+        height: 100%;
+      }
+    }
+
+    @media all and (max-width: 426px) {
+      overflow: hidden;
+    }
+  }
+}
